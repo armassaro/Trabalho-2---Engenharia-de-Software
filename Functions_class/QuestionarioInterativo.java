@@ -26,9 +26,6 @@ public class QuestionarioInterativo {
     private final List<Pergunta> perguntasErradas = new ArrayList<>();
     private final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        new QuestionarioInterativo().iniciarQuestionario();
-    }
 
     @SuppressWarnings("ConvertToTryWithResources")
     public void iniciarQuestionario() {

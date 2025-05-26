@@ -5,10 +5,11 @@ import java.util.Scanner;
 
 public class View {
     public static class TimeFilter { 
+        // Método para exibir a introdução do filtro de tempo
         public static void showTimeFilterIntroduction() { 
             View.clearScreen();
             System.out.println("Bem vindo ao filtro de tempo!");
-            System.out.println("Digite o intervalo de tempo para as questões que gostaria de ver: ");
+            System.out.println("Digite o intervalo de tempo (ex.: 01/01/2024 - 01/01/2025) para as questões que gostaria de ver: ");
         }
         // public static void showTimeFilteredQuestions(List<Question> questions) { 
         //     for(Question question : questions) { 
@@ -20,6 +21,7 @@ public class View {
         // }
     }
 
+    // Método para exibir o menu inicial de opções
     public static void showMenuoptions() { 
         System.out.println("Seja bem vindo!");
         System.out.println("Selecione uma das 3 opções abaixo: ");
@@ -30,6 +32,7 @@ public class View {
         System.out.println("Digite a opção desejada: ");
     }
 
+    // Método para limpar a tela do console, podendo ser utilizada para outras classes
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

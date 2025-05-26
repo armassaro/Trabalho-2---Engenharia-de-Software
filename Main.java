@@ -1,4 +1,5 @@
 // Importando as classes do MVC
+import Functions_class.QuestionarioInterativo;
 import MVC_class.*;
 
 public class Main {
@@ -13,6 +14,9 @@ public class Main {
         // 4 - Sair
         // Digite a opção desejada: 
         View.showMenuoptions();
+
+        QuestionarioInterativo questionario = new QuestionarioInterativo();
+        questionario.iniciarQuestionario();
 
         switch(Controller.nextMenuOption()) { 
             // Caso 1: Questionário interativo

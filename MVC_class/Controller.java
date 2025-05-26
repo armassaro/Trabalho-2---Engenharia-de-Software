@@ -45,28 +45,29 @@ public class Controller {
 
         public static void run() {
             try {
-                QuizView.display("🔍 Welcome to Interactive Quiz!");
-                String topic = QuizView.getInput("Enter the quiz topic: ");
+                QuizView.display("🔍 Bem-vindo ao Questionário Interativo!");
+                String topic = QuizView.getInput("Digite o tema do questionário: ");
                 
-                QuizView.display("\n🔍 Generating questions...");
+                QuizView.display("\n🔍 Gerando perguntas...");
                 List<Question> questions = QuizModel.generateQuestions(topic);
                 
                 if (questions.isEmpty()) {
-                    QuizView.display("❌ Error generating questions");
+                    QuizView.display("❌ Não foi possível gerar perguntas");
                     return;
                 }
 
                 int score = runQuiz(questions);
                 
-                QuizView.display("\n📊 Final Score: " + score + "/" + questions.size());
+                QuizView.display("\n📊 RESULTADO FINAL");
+                QuizView.display("Você acertou " + score + " de " + questions.size() + " perguntas!");
                 showCorrectAnswers(questions);
                 
-                QuizModel.saveData(questions, "all_questions.dat");
-                QuizModel.saveData(correctAnswers, "correct_answers.dat");
-                QuizModel.saveData(wrongAnswers, "wrong_answers.dat");
+                QuizModel.saveData(questions, "todas_questoes.dat");
+                QuizModel.saveData(correctAnswers, "acertadas.dat");
+                QuizModel.saveData(wrongAnswers, "erradas.dat");
                 
             } catch (IOException e) {
-                QuizView.display("❌ Error: " + e.getMessage());
+                QuizView.display("❌ Erro: " + e.getMessage());
             } finally {
                 QuizView.close();
             }
@@ -82,16 +83,16 @@ public class Controller {
                 QuizView.displayQuestion(i+1, q);
                 
                 String userAnswer;
-                while (!(userAnswer = QuizView.getInput("\nYour answer (A-D): ")).matches("[A-D]")) {
-                    QuizView.display("Invalid input! Please enter A, B, C or D:");
+                while (!(userAnswer = QuizView.getInput("\nSua resposta (A-D): ")).matches("[A-D]")) {
+                    QuizView.display("Resposta inválida! Digite A, B, C ou D:");
                 }
                 
                 if (userAnswer.equals(q.correctAnswer)) {
-                    QuizView.display("✅ Correct!\n");
+                    QuizView.display("✅ Correto!\n");
                     correctAnswers.add(q);
                     score++;
                 } else {
-                    QuizView.display("❌ Wrong! Correct answer: " + q.correctAnswer + "\n");
+                    QuizView.display("❌ Errado! Resposta correta: " + q.correctAnswer + "\n");
                     wrongAnswers.add(q);
                 }
             }
@@ -99,7 +100,7 @@ public class Controller {
         }
 
         private static void showCorrectAnswers(List<Question> questions) {
-            QuizView.display("\n🔍 Correct Answers:");
+            QuizView.display("\n🔍 Respostas Corretas:");
             for (int i = 0; i < questions.size(); i++) {
                 Question q = questions.get(i);
                 QuizView.display(String.format("%d. %s → %s) %s", 

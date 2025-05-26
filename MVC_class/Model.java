@@ -21,15 +21,17 @@ import MVC_class.Model.QuizModel.Question;
 
 
 public class Model { 
-    public static class DateFilter { 
-        public static List<QuizModel.Question> filteredQuestions = new ArrayList<>();
-        public static String dateInterval;
+    public static class DateFilter {
+        public static String dateInterval = null;
     }   
     
     public static class QuizModel {
         private static final String API_KEY = "AIzaSyCzYcP0zEVCnOu8D1e7TtUc5WaQhYFQT9c";
         private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
         public static List<Question> questions = new ArrayList<>();
+        public static final String allQuestionsFileName = "all_questions.dat";
+        public static final String wrongQuestionsFileName = "wrong_questions.dat";
+        public static final String correctQuestionsFileName = "correct_questions.dat";
 
         public static class Question implements Serializable {
             private static final long serialVersionUID = 1L;

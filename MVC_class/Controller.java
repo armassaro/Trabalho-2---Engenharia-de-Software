@@ -11,25 +11,7 @@ import java.util.Scanner;
 
 public class Controller {
     private static final Scanner s = new Scanner(System.in);
-    
-    public static class DateFilter {
-        public static String nextDateInterval() { 
-            String str = s.next();
-            String[] strList = str.split(",");
-            // Realiza a checagem se a string de interavalo de data é válida
-            // Caso for inválida, retorna null
-            for(int a = 0; a < strList.length; a++) { 
-                try { 
-                    LocalDate.parse(strList[a], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                }
-                catch(Exception e) { 
-                    return null;
-                }
-            }
-            Model.DateFilter.dateInterval = str;
-            return str;
-        }
-    }
+
     public static int nextMenuOption() { 
         return s.nextInt();
     }
@@ -38,8 +20,26 @@ public class Controller {
         return s.next();
     }
 
+    public static class DateFilter {
+        public static void nextDateInterval() { 
+            String str = s.next();
+            String[] strList = str.split(",");
+            // Realiza a checagem se a string de interavalo de data é válida
+            // Caso for inválida, coloca null para a variável de interavalo de data presente no Model.DateFilter
+            for(int a = 0; a < strList.length; a++) { 
+                try { 
+                    LocalDate.parse(strList[a], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                }
+                catch(Exception e) { 
+                    Model.DateFilter.dateInterval =  null;
+                    return;
+                }
+            }
+            Model.DateFilter.dateInterval = str;
+        }
+    }
     
-public static class QuizController {
+    public static class QuizController {
         private static final List<Question> correctAnswers = new ArrayList<>();
         private static final List<Question> wrongAnswers = new ArrayList<>();
 
@@ -108,5 +108,4 @@ public static class QuizController {
             }
         }
     }
-
 }

@@ -27,15 +27,14 @@ public class DateFilter {
 
     // Método privado para converter uma string de intervalo de datas para um vetor de LocalDate
     private LocalDate[] parseDates(String datesStr) { 
-        System.out.println(datesStr);
-        // String str = datesStr.length() == 24 ? datesStr : (String) datesStr.subSequence(0, 23);
         String[] dates = datesStr.split(",");
-        System.out.println(dates[0] + dates[1]);
         LocalDate[] localDates = { LocalDate.parse(dates[0], DateTimeFormatter.ofPattern("dd/MM/yyyy")), LocalDate.parse(dates[1], DateTimeFormatter.ofPattern("dd/MM/yyyy")) };
         return localDates;
     } 
 
     // Método para filtragem de questões baseado em intervalo de data
+    // O método abaixo não utiliza as questões armazenadas em arquivo, mas é um método que disponibiliza a funcionalidade de 
+    // filtro por data para possíveis próximas implementações do código, onde a funcionalidade de filtro fosse necessária
     public List<QuizModel.Question> filterQuestionsByDateInterval(List<QuizModel.Question> questions, String datesStr) {
         List<QuizModel.Question> filteredQuestions = new ArrayList<>();
         LocalDate[] parsedDates = parseDates(datesStr);
@@ -54,20 +53,7 @@ public class DateFilter {
 
     // Método para filtragem de questões guardadas em arquivo
     public List<QuizModel.Question> filterStoredQuestionsByDateInterval(String datesStr) throws ClassNotFoundException, IOException {
-        List<QuizModel.Question> filteredQuestions = new ArrayList<>();
-        List<QuizModel.Question> questions = Model.QuizModel.getAllQuestions("example");
-
-        LocalDate[] parsedDates = parseDates(Model.DateFilter.dateInterval);
-
-        for(QuizModel.Question question : questions) {
-            LocalDate questionDate = parseDate(question.creationDate);
-            
-            // Se a data da questão está depois da data inicial e antes da data final, então a data da questão está no intervalo válido
-            if(questionDate.isAfter(parsedDates[0]) && questionDate.isBefore(parsedDates[1]) || (questionDate.isEqual(parsedDates[0]) || questionDate.isEqual(parsedDates[1]))) {
-                filteredQuestions.add(question);
-            }
-        }
-
-        return filteredQuestions;
+        // Obém todas as questões armazenadas em arquivo a partir de getAllQuestions
+        return filterQuestionsByDateInterval(Model.QuizModel.getAllQuestions("example"), datesStr);
     }
 }

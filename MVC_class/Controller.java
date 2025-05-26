@@ -6,18 +6,26 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Controller {
-    private static final Scanner s = new Scanner(System.in);
+    private static Scanner s = new Scanner(System.in);
 
-    public static int nextMenuOption() { 
-        return s.nextInt();
+    public static Integer nextMenuOption() {
+        try {
+            return Integer.parseInt(s.next());
+        } catch (NumberFormatException e) {
+            // Caso a entrada não seja um número inteiro, retorna -1
+            return -1;
+        }
     }
 
     public static String nextAnswer() { 
-        return s.next();
+        String str = s.next();
+
+        return str;
     }
 
     public static class DateFilter {
@@ -67,9 +75,7 @@ public class Controller {
                 QuizModel.saveData(wrongAnswers, "erradas.dat");
                 
             } catch (IOException e) {
-                QuizView.display("❌ Erro: " + e.getMessage());
-            } finally {
-                QuizView.close();
+                QuizView.display("❌ Error: " + e.getMessage());
             }
         }
 

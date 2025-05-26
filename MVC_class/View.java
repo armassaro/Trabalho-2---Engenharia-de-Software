@@ -89,8 +89,6 @@ public class View {
     }
 
     public static class QuizView {
-        private static final Scanner scanner = new Scanner(System.in);
-
         public static void display(String message) {
             System.out.println(message);
         }
@@ -105,11 +103,7 @@ public class View {
 
         public static String getInput(String prompt) {
             System.out.print(prompt);
-            return scanner.nextLine().trim().toUpperCase();
-        }
-
-        public static void close() {
-            scanner.close();
+            return Controller.nextAnswer();
         }
     }
 }

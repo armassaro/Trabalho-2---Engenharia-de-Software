@@ -21,8 +21,7 @@ public class Main {
             switch (Controller.nextMenuOption()) {
                 // Caso 1: Questionário interativo
                 case 1:
-                    QuestionarioInterativo questionario = new QuestionarioInterativo();
-                    questionario.iniciarQuestionario();
+                    Controller.QuizController.run();
                     break;
                 // Caso 2: Mostrar questões filtradas por intervalo de tempo
                 case 2:

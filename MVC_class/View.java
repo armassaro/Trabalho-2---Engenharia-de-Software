@@ -1,23 +1,22 @@
 package MVC_class;
 
 import MVC_class.Model.QuizModel.Question;
+
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 public class View {
-    public static class TimeFilter { 
-        public static void showTimeFilterIntroduction() { 
+    public static class DateFilter { 
+        public static void showDateFilterIntroduction() { 
             View.clearScreen();
-            System.out.println("Bem vindo ao filtro de tempo!");
-            System.out.println("Digite o intervalo de tempo para as questões que gostaria de ver: ");
+            System.out.println("Bem vindo ao filtro de data!");
+            System.out.println("Digite o intervalo de data (ex.: 01/01/2024 - 01/01/2025) para as questões que gostaria de ver: ");
         }
-        // public static void showTimeFilteredQuestions(List<Question> questions) { 
-        //     for(Question question : questions) { 
-        //         System.out.println(question.getStatement());
-        //         System.out.println(question.getAlternatives());
-        //         System.out.println("Resposta correta: " + question.getCorrectAnswer());
-        //         System.out.println("Resposta marcada: " + question.getAnswer());
-        //     }
-        // }
+        public static void showInvalidDateIntervalWarning() { 
+            // clearScreen();
+            System.out.println("A data inserida é inválida! Insira novamente no seguinte modelo: 01/01/2024,01/01/2025");
+        }
     }
 
     public static void showMenuoptions() { 
@@ -61,5 +60,12 @@ public class View {
         }
     }
 
+    public static void showQuestions(List<Question> questions) { 
+        Iterator<Question> iterator = questions.iterator();
 
+        while(iterator.hasNext()) { 
+            Question question = iterator.next();
+            System.out.println(question.creationDate);
+        }
+    }
 }

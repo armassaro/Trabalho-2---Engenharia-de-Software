@@ -1,9 +1,10 @@
 package MVC_class;
-
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -11,17 +12,24 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import MVC_class.Model.QuizModel.Question;
 
 
 public class Model { 
-    public static class TimeFilter { 
-    }
+    public static class DateFilter { 
+        public static List<QuizModel.Question> filteredQuestions = new ArrayList<>();
+        public static String dateInterval;
+    }   
     
     public static class QuizModel {
         private static final String API_KEY = "AIzaSyCzYcP0zEVCnOu8D1e7TtUc5WaQhYFQT9c";
         private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+        public static List<Question> questions = new ArrayList<>();
 
         public static class Question implements Serializable {
             private static final long serialVersionUID = 1L;
@@ -80,6 +88,10 @@ public class Model {
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
                 oos.writeObject(questions);
             }
+            finally { 
+                // Salva as perguntas geradas pela IA para a variável que guarda as questões
+                Model.QuizModel.questions = questions;
+            }
         }
 
         private static String extractText(String json) {
@@ -112,5 +124,60 @@ public class Model {
             }
             return questions;
         }
+        
+        public static List<Question> getAllQuestions(String filename) throws IOException, ClassNotFoundException {
+            List<Question> loadedQuestions = new ArrayList<>();
+            
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+                // Faz o cast do objeto lido para List<Question>
+                loadedQuestions = (List<Question>) ois.readObject();
+            } catch(Exception e) {}
+
+            return loadedQuestions;
+        }
     }
+
+    // INÍCIO DAS FUNÇÕES DE TESTE
+    public static void generateMassiveQuestionFile(String filename) throws IOException {
+            List<Question> massiveQuestions = new ArrayList<>();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            
+            // Gera 600 questões com datas variadas nos últimos 2 anos
+            for (int i = 1; i <= 600; i++) {
+                Question q = new Question();
+                q.text = "Questão de exemplo #" + i + ": Qual é a capital do Brasil?";
+                q.options.add("Rio de Janeiro");
+                q.options.add("São Paulo");
+                q.options.add("Brasília");
+                q.options.add("Salvador");
+                q.correctAnswer = "C";
+                
+                // Gera uma data aleatória nos últimos 2 anos
+                q.creationDate = generateRandomDate(dateFormat);
+                
+                massiveQuestions.add(q);
+            }
+            
+            // Salva no arquivo
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+                oos.writeObject(massiveQuestions);
+            }
+        }
+        
+    private static String generateRandomDate(SimpleDateFormat dateFormat) {
+            // Data atual
+            Calendar cal = Calendar.getInstance();
+            Date endDate = cal.getTime();
+            
+            // Data 2 anos atrás
+            cal.add(Calendar.YEAR, -2);
+            Date startDate = cal.getTime();
+            
+            // Gera um timestamp aleatório entre startDate e endDate
+            long randomMillis = ThreadLocalRandom.current()
+                .nextLong(startDate.getTime(), endDate.getTime());
+            
+            return dateFormat.format(new Date(randomMillis));
+        }
+    // FIM DAS FUNÇÕES DE TESTE
 }

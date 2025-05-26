@@ -3,6 +3,8 @@ import MVC_class.Model.QuizModel;
 import MVC_class.Model.QuizModel.Question;
 import MVC_class.View.QuizView;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,9 +12,22 @@ import java.util.Scanner;
 public class Controller {
     private static final Scanner s = new Scanner(System.in);
     
-    public static class TimeFilter {
-        public static void nextTimeInterval() { 
-            s.nextLine();
+    public static class DateFilter {
+        public static String nextDateInterval() { 
+            String str = s.next();
+            String[] strList = str.split(",");
+            // Realiza a checagem se a string de interavalo de data é válida
+            // Caso for inválida, retorna null
+            for(int a = 0; a < strList.length; a++) { 
+                try { 
+                    LocalDate.parse(strList[a], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                }
+                catch(Exception e) { 
+                    return null;
+                }
+            }
+            Model.DateFilter.dateInterval = str;
+            return str;
         }
     }
     public static int nextMenuOption() { 

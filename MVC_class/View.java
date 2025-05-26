@@ -1,5 +1,8 @@
 package MVC_class;
 
+import MVC_class.Model.QuizModel.Question;
+import java.util.Scanner;
+
 public class View {
     public static class TimeFilter { 
         public static void showTimeFilterIntroduction() { 
@@ -31,4 +34,33 @@ public class View {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+    
+    public static class QuizView {
+        private static final Scanner scanner = new Scanner(System.in);
+
+        public static void display(String message) {
+            System.out.println(message);
+        }
+
+        public static void displayQuestion(int number, Question question) {
+            System.out.printf("\n%d. %s [%s]\n", number, question.text, question.creationDate);
+            char option = 'A';
+            for (String opt : question.options) {
+                System.out.printf("   %s) %s\n", option++, opt);
+            }
+        }
+
+        public static String getInput(String prompt) {
+            System.out.print(prompt);
+            return scanner.nextLine().trim().toUpperCase();
+        }
+
+        public static void close() {
+            scanner.close();
+        }
+    }
+
+
 }
+

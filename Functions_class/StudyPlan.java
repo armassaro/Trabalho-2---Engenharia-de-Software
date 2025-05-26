@@ -8,8 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class GeradorPlanoEstudos {
-
+public class StudyPlan {
     public static void main(String[] args) {
         try {
             byte[] bytes = Files.readAllBytes(Paths.get("erradas.dat"));

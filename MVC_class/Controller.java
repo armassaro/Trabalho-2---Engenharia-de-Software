@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Controller {
+public abstract class Controller {
     private static Scanner s = new Scanner(System.in);
 
     public static Integer nextMenuOption() {

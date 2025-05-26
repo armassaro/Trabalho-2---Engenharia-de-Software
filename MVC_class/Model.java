@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import MVC_class.Model.QuizModel.Question;
 
-public class Model {
+public abstract class Model {
     public static class DateFilter {
         public static String dateInterval = null;
     }

@@ -4,9 +4,8 @@ import MVC_class.Model.QuizModel.Question;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
-public class View {
+public abstract class View {
     // Cores ANSI para formatação de texto no método showColouredMessage
     private static final String RESET = "\u001B[0m";
     private static final String RED = "\u001B[31m";

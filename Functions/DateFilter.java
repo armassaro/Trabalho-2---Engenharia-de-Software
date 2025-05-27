@@ -1,23 +1,23 @@
-package Functions_class;
+package Functions;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import MVC_class.Model;
-import MVC_class.Model.QuizModel;
-// Aluno responsável pela classe: Arthur Romano Massaro, 2478374
-// Padrão de projeto escolhido: Singleton
-// Breve explicação sobre a função: A classe DateFilter é responsável por filtrar perguntas com base em um intervalo de tempo específico determinado pela entrada do usuário.
+import MVC.Model;
+import MVC.Model.QuizModel;
 
 public class DateFilter {
+    private static DateFilter dateFilterInstance = new DateFilter();
+
     // Construtor privado
     private DateFilter() {}
+
     // Método de classe público simulando um construtor, onde o mesmo sempre retorna a mesma instância do objeto para qualquer lugar no código,
     // garantindo que sempre haja apenas uma instância de DateFilter no programa inteiro
     public static DateFilter getInstance() {
-        return new DateFilter();
+        return dateFilterInstance;
     }
 
     // Método privado para converter uma string de data para LocalDate, facilitando o filtro por tempo

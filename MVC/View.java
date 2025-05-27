@@ -1,7 +1,6 @@
-package MVC_class;
+package MVC;
 
-import MVC_class.Model.QuizModel.Question;
-
+import MVC.Model.QuizModel.Question;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,8 +11,7 @@ public abstract class View {
     private static final String GREEN = "\u001B[32m";
     private static final String YELLOW = "\u001B[33m";
     private static final String BLUE = "\u001B[34m";
-    private static final String PURPLE = "\u001B[35m";
-    private static final String CYAN = "\u001B[36m";
+
 
     // Método para limpar a tela do console
     public static void clearScreen() {
@@ -105,4 +103,26 @@ public abstract class View {
             return Controller.nextAnswer();
         }
     }
+
+
+   
+public static class StudyPlanView {
+    public static void showLoadingMessage() {
+        showColouredMessage("\n🔍 Gerando plano de estudos personalizado...", "blue");
+    }
+    
+    public static void showStudyPlan(String plan) {
+        clearScreen();
+        showColouredMessage("\n📚 PLANO DE ESTUDOS PERSONALIZADO\n", "green");
+        System.out.println(plan);
+        showColouredMessage("\nPressione Enter para voltar ao menu...", "yellow");
+    }
+    
+    public static void showNoWrongAnswersMessage() {
+        showColouredMessage("\nℹ️ Não há questões erradas para gerar um plano de estudos.", "yellow");
+    }
+}
+
+
+
 }

@@ -1,9 +1,6 @@
-
-// Importando as classes do MVC
+import MVC.*;
+import Functions.*;
 import java.io.IOException;
-
-import Functions_class.*;
-import MVC_class.*;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, IOException {
@@ -20,11 +17,9 @@ public class Main {
             View.showMenuoptions();
             switch (Controller.nextMenuOption()) {
                 // Caso 1: Questionário interativo
-                case 1:
-                    Controller.QuizController.run();
-                    break;
+                case 1 -> Controller.QuizController.run();
                 // Caso 2: Mostrar questões filtradas por intervalo de tempo
-                case 2:
+                case 2 -> {
                     View.DateFilter.showDateFilterIntroduction();
                     Controller.DateFilter.nextDateInterval();
 
@@ -32,7 +27,6 @@ public class Main {
                     while (Model.DateFilter.dateInterval == null) {
                         View.DateFilter.showInvalidDateIntervalWarning();
                         View.DateFilter.showInputDateIntervalMessage();
-
                         Controller.DateFilter.nextDateInterval();
                     }
 
@@ -41,18 +35,15 @@ public class Main {
 
                     // Demonstra as questões a partir da lista de questões geradas pelo filtro
                     View.showQuestions(dateFilter.filterStoredQuestionsByDateInterval(Model.DateFilter.dateInterval));
-                    break;
-                // Caso 3: Mostrar plano de estudos
-                case 3:
-
-                    break;
-                // Caso 4: Sai do programa
-                case 4:
-                    System.exit(0);
-                    break;
-                default:
-                    View.showInvalidMenuInputWarning();
-                    break;
+                }
+                    
+                case 3 -> {
+                    Controller.StudyPlanController.run();
+                }
+                    
+                case 4 -> System.exit(0);
+                    
+                default -> View.showInvalidMenuInputWarning();
             }
         }
     }

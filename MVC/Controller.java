@@ -1,7 +1,8 @@
-package MVC_class;
-import MVC_class.Model.QuizModel;
-import MVC_class.Model.QuizModel.Question;
-import MVC_class.View.QuizView;
+package MVC;
+import Functions.StudyPlan;
+import MVC.Model.QuizModel;
+import MVC.Model.QuizModel.Question;
+import MVC.View.QuizView;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,17 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public abstract class Controller {
-    private static Scanner s = new Scanner(System.in);
+    private static final Scanner s = new Scanner(System.in);
 
     public static Integer nextMenuOption() {
         try {
-            return Integer.parseInt(s.next());
+            return Integer.valueOf(s.next());
         } catch (NumberFormatException e) {
             // Caso a entrada não seja um número inteiro, retorna -1
             return -1;
         }
     }
+
+
 
     public static String nextAnswer() { 
         String str = s.next();
@@ -33,11 +37,10 @@ public abstract class Controller {
             String[] strList = str.split(",");
             // Realiza a checagem se a string de interavalo de data é válida
             // Caso for inválida, coloca null para a variável de interavalo de data presente no Model.DateFilter
-            for(int a = 0; a < strList.length; a++) { 
-                try { 
-                    LocalDate.parse(strList[a], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                }
-                catch(Exception e) { 
+            for (String strList1 : strList) {
+                try {
+                    LocalDate.parse(strList1, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                }catch(Exception e) { 
                     Model.DateFilter.dateInterval =  null;
                     return;
                 }
@@ -114,4 +117,45 @@ public abstract class Controller {
             }
         }
     }
+
+
+public static class StudyPlanController {
+    public static void run() {
+        try {
+            String wrongAnswersContent = StudyPlan.generateFromWrongAnswers();
+            
+            if (wrongAnswersContent == null || wrongAnswersContent.trim().isEmpty()) {
+                View.StudyPlanView.showNoWrongAnswersMessage();
+                waitForEnter();
+                return;
+            }
+            
+            View.StudyPlanView.showLoadingMessage();
+            
+            // Gera o plano de estudos
+            String studyPlan = Model.StudyPlanModel.generateStudyPlan(wrongAnswersContent);
+            
+            // Exibe o plano
+            View.StudyPlanView.showStudyPlan(studyPlan);
+            waitForEnter();
+            
+        } catch (IOException e) {
+            View.showColouredMessage("❌ Erro ao gerar plano: " + e.getMessage(), "red");
+        }
+    }
+    
+    private static void waitForEnter() {
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            // Ignora erros ao esperar Enter
+        }
+    }
+}
+     
+
+
+
+
+
 }

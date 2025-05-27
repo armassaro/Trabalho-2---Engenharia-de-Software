@@ -1,5 +1,6 @@
-package MVC_class;
+package MVC;
 
+import MVC.Model.QuizModel.Question;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,14 +12,13 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import MVC_class.Model.QuizModel.Question;
 
 public abstract class Model {
     public static class DateFilter {
@@ -175,4 +175,74 @@ public abstract class Model {
         return dateFormat.format(new Date(randomMillis));
     }
     // FIM DAS FUNÇÕES DE TESTE
+
+
+
+   // No arquivo Model.java, adicione esta classe interna
+public static class StudyPlanModel {
+        private static final String API_KEY = "AIzaSyCzYcP0zEVCnOu8D1e7TtUc5WaQhYFQT9c";
+        private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+
+        public static String generateStudyPlan(String content) throws IOException {
+            String response = callAPI(content);
+            return extractText(response);
+        }
+
+    private static String extractText(String json) {
+            int start = json.indexOf("\"text\": \"") + 9;
+            int end = json.indexOf("\"", start);
+            return (start < 9 || end < 0) ? "Erro ao extrair texto" : 
+                   json.substring(start, end)
+                      .replace("\\n", "\n")
+                      .replace("\\\"", "\"");
+        }
+
+    private static String callAPI(String content) throws IOException {
+        URI uri = URI.create(API_URL + "?key=" + API_KEY);
+        HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        String prompt = """
+            Gere um plano de estudos COMPLETO E DETALHADO com base nas seguintes questões erradas:
+            
+            %s
+            
+            O plano deve conter:
+            1. Tópicos prioritários para revisão
+            2. Recursos recomendados (livros, vídeos, exercícios)
+            3. Cronograma sugerido
+            4. Métodos de estudo mais eficazes
+            
+            Formate a resposta em markdown com seções claras.
+            """.formatted(content);
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(String.format("{\"contents\":[{\"parts\":[{\"text\":\"%s\"}]}]}", 
+                prompt.replace("\"", "\\\"")).getBytes(StandardCharsets.UTF_8));
+        }
+
+        if (conn.getResponseCode() != 200) {
+            throw new IOException("Erro na API: " + conn.getResponseMessage());
+        }
+
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+        }
+        return response.toString();
+    }
 }
+
+
+
+
+
+
+}
+
+
